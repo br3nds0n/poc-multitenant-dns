@@ -14,6 +14,11 @@ export default defineNuxtRouteMiddleware((to, from) => {
     // Extrai apenas o domínio (remove porta se houver)
     const domain = tenant.split(':')[0]
 
+    // Redireciona se o host for test.mangrovelabs.com.br
+    if (domain === 'test.mangrovelabs.com.br' && to.path !== '/test') {
+      return navigateTo('/test')
+    }
+
     // Armazena o tenant no contexto da aplicação
     const nuxtApp = useNuxtApp()
     nuxtApp.payload.tenant = {
