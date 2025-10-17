@@ -37,7 +37,7 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 RUN mkdir -p /var/log/nginx /run/nginx
 
 # Expor portas
-EXPOSE 3002 3000
+EXPOSE 3002
 
 # Script de inicialização
 RUN echo '#!/bin/sh' > /start.sh && \

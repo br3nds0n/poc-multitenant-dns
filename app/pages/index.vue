@@ -3,22 +3,43 @@
     <h1>Bem-vindo ao Nuxt</h1>
     <p>Esta é sua página inicial</p>
 
+    <div class="card tenant-info">
+      <h2>Informações do Tenant</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="label">Domínio:</span>
+          <span class="value">{{ domain }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Host:</span>
+          <span class="value">{{ host }}</span>
+        </div>
+        <div v-if="tenant" class="info-item">
+          <span class="label">Timestamp:</span>
+          <span class="value">{{ tenant.timestamp }}</span>
+        </div>
+      </div>
+    </div>
+
     <div class="card">
       <h2>Sobre este projeto</h2>
       <p>POC Multi-tenant DNS - Demonstração com Nuxt 4</p>
+      <p>Este middleware captura automaticamente o DNS de origem de cada requisição.</p>
     </div>
 
-
+    <nav class="navigation">
+      <NuxtLink to="/about">Ir para Sobre</NuxtLink>
+    </nav>
   </div>
 </template>
 
 <script setup lang="ts">
-// Você pode adicionar lógica aqui
-const pageTitle = 'Home'
+// Usar o composable para obter informações do tenant
+const { tenant, domain, host } = useTenant()
 
 // Metadata da página
 useHead({
-  title: pageTitle
+  title: `Home - ${domain.value}`
 })
 </script>
 
@@ -60,5 +81,33 @@ h1 {
 
 .navigation a:hover {
   text-decoration: underline;
+}
+
+.tenant-info {
+  background: #e8f5e9;
+  border-left: 4px solid #00DC82;
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.info-item .label {
+  font-weight: 600;
+  color: #555;
+  min-width: 100px;
+}
+
+.info-item .value {
+  color: #00DC82;
+  font-family: 'Courier New', monospace;
+  word-break: break-all;
 }
 </style>
