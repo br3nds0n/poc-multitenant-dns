@@ -1,27 +1,24 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-  if (process.server) {
+import type { TenantInfo } from '~/composables/useTenant'
+
+export default defineNuxtRouteMiddleware((to) => {
+  if (import.meta.server) {
     const event = useRequestEvent()
     const headers = event?.node.req.headers
 
     // Captura o host (DNS) da requisição
-    const host = headers?.host || 'unknown'
-    const xForwardedHost = headers?.['x-forwarded-host']
-    const xOriginalHost = headers?.['x-original-host']
+    const host: string = (headers?.host as string) || 'unknown'
+    const xForwardedHost: string | string[] | undefined = headers?.['x-forwarded-host']
+    const xOriginalHost: string | string[] | undefined = headers?.['x-original-host']
 
     // Prioriza headers do proxy reverso
-    const tenant = (xForwardedHost || xOriginalHost || host) as string
+    const tenant: string = (xForwardedHost || xOriginalHost || host) as string
 
     // Extrai apenas o domínio (remove porta se houver)
-    const domain = tenant.split(':')[0]
-
-    // Redireciona se o host for test.mangrovelabs.com.br
-    if (domain === 'test.mangrovelabs.com.br' && to.path !== '/test') {
-      return navigateTo('/test')
-    }
+    const domain: string = tenant.split(':')[0] || 'unknown'
 
     // Armazena o tenant no contexto da aplicação
     const nuxtApp = useNuxtApp()
-    nuxtApp.payload.tenant = {
+    const tenantInfo: TenantInfo = {
       domain,
       host: tenant,
       fullHost: host,
@@ -29,6 +26,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
       xOriginalHost,
       timestamp: new Date().toISOString()
     }
+
+    nuxtApp.payload.tenant = tenantInfo
 
     // Log para debug (opcional)
     console.log('[Tenant Middleware]', {

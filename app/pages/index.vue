@@ -1,113 +1,35 @@
 <template>
-  <div class="container">
-    <h1>Bem-vindo ao Nuxt</h1>
-    <p>Esta é sua página inicial</p>
+  <div>
+    <!-- Renderiza componente Mangrove se o domínio contém "mangrove" -->
+    <MangroveHome v-if="isMangrove" />
 
-    <div class="card tenant-info">
-      <h2>Informações do Tenant</h2>
-      <div class="info-grid">
-        <div class="info-item">
-          <span class="label">Domínio:</span>
-          <span class="value">{{ domain }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">Host:</span>
-          <span class="value">{{ host }}</span>
-        </div>
-        <div v-if="tenant" class="info-item">
-          <span class="label">Timestamp:</span>
-          <span class="value">{{ tenant.timestamp }}</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Sobre este projeto</h2>
-      <p>POC Multi-tenant DNS - Demonstração com Nuxt 4</p>
-      <p>Este middleware captura automaticamente o DNS de origem de cada requisição.</p>
-    </div>
-
-    <nav class="navigation">
-      <NuxtLink to="/about">Ir para Sobre</NuxtLink>
-    </nav>
+    <!-- Renderiza componente genérico para outros domínios -->
+    <GenericHome v-else />
   </div>
 </template>
 
-<script setup lang="ts">
-// Usar o composable para obter informações do tenant
-const { tenant, domain, host } = useTenant()
+<script lang="ts">
+import type { TenantInfo } from '~/composables/useTenant'
 
-// Metadata da página
-useHead({
-  title: `Home - ${domain.value}`
-})
+export default {
+  computed: {
+    tenant(): TenantInfo | null {
+      const nuxtApp = useNuxtApp()
+      return (nuxtApp.payload.tenant as TenantInfo) || null
+    },
+    domain(): string {
+      return this.tenant?.domain || 'unknown'
+    },
+    isMangrove(): boolean {
+      return this.domain.toLowerCase().includes('mangrove')
+    }
+  },
+  head() {
+    return {
+      title: this.isMangrove
+        ? `Mangrove Labs - ${this.domain}`
+        : `Home - ${this.domain}`
+    }
+  }
+}
 </script>
-
-<style scoped>
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: system-ui, -apple-system, sans-serif;
-}
-
-h1 {
-  color: #00DC82;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.card {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 2rem 0;
-}
-
-.card h2 {
-  color: #333;
-  margin-top: 0;
-}
-
-.navigation {
-  margin-top: 2rem;
-}
-
-.navigation a {
-  color: #00DC82;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.navigation a:hover {
-  text-decoration: underline;
-}
-
-.tenant-info {
-  background: #e8f5e9;
-  border-left: 4px solid #00DC82;
-}
-
-.info-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.info-item {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.info-item .label {
-  font-weight: 600;
-  color: #555;
-  min-width: 100px;
-}
-
-.info-item .value {
-  color: #00DC82;
-  font-family: 'Courier New', monospace;
-  word-break: break-all;
-}
-</style>
