@@ -1,5 +1,5 @@
 <template>
-  <div class="tenant-switcher">
+  <div v-if="showSwitcher" class="tenant-switcher">
     <div class="switcher-header">
       <h3>🌐 Navegação entre Tenants</h3>
       <p class="current-tenant">Atual: <strong>{{ currentTenant }}</strong></p>
@@ -52,6 +52,19 @@ export default {
     }
   },
   computed: {
+    showSwitcher(): boolean {
+      // Só mostra em desenvolvimento (localhost)
+      if (import.meta.client) {
+        const hostname = window.location.hostname
+        const isDev = hostname === 'localhost' ||
+                     hostname === '127.0.0.1' ||
+                     hostname.includes('sslip.io') ||
+                     hostname.includes('.local')
+
+        return isDev
+      }
+      return false
+    },
     currentTenant(): string {
       if (import.meta.client) {
         return window.location.hostname
