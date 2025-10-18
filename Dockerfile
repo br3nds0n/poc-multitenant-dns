@@ -10,5 +10,5 @@ WORKDIR /app
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package*.json ./
 RUN npm ci --omit=dev
-EXPOSE 3000
+EXPOSE 3002 3000
 CMD ["node", ".output/server/index.mjs"]
