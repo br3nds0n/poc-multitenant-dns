@@ -14,8 +14,8 @@ export default defineNuxtRouteMiddleware((to) => {
 
     const allowed = isRouteAllowed(domain, routePath)
 
-    // if (!allowed) {
-    //   return navigateTo('/403')
-    // }
+    if (!allowed) {
+      return navigateTo('/403')
+    }
   }
 })

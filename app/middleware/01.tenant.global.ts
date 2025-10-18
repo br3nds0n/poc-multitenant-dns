@@ -9,8 +9,22 @@ export default defineNuxtRouteMiddleware((to) => {
     const xForwardedHost: string | string[] | undefined = headers?.['x-forwarded-host']
     const xOriginalHost: string | string[] | undefined = headers?.['x-original-host']
 
-    const tenant: string = (xForwardedHost || xOriginalHost || host) as string
-    const domain: string = tenant.split(':')[0] || 'unknown'
+    let tenant: string = (xForwardedHost || xOriginalHost || host) as string
+    let domain: string = tenant.split(':')[0] || 'unknown'
+
+    // Em localhost, permite override via query parameter
+    const isLocalhost = domain === 'localhost' || domain.includes('127.0.0.1') || domain.includes('sslip.io')
+    if (isLocalhost && to.query.tenant) {
+      const tenantParam = to.query.tenant as string
+      // Mapeia os tenants simulados
+      const tenantMap: Record<string, string> = {
+        'mangrove': 'mangrovelabs.com.br',
+        'test': 'test.mangrovelabs.com.br',
+        'default': 'localhost'
+      }
+      domain = tenantMap[tenantParam] || domain
+      tenant = domain
+    }
 
     const nuxtApp = useNuxtApp()
     const tenantInfo: TenantInfo = {

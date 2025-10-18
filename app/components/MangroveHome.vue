@@ -53,8 +53,11 @@
       </div>
     </div>
 
+    <TenantSwitcher />
+
     <nav class="navigation">
       <NuxtLink to="/about">Saiba mais sobre nós</NuxtLink>
+      <NuxtLink to="/test-area" v-if="isTestTenant" class="test-link">🧪 Área de Testes</NuxtLink>
     </nav>
   </div>
 </template>
@@ -78,6 +81,9 @@ export default {
     },
     host(): string {
       return this.tenant?.host || 'unknown'
+    },
+    isTestTenant(): boolean {
+      return this.domain.toLowerCase().includes('test.mangrove')
     }
   },
   methods: {
@@ -213,6 +219,17 @@ export default {
 
 .navigation a:hover {
   background: #00DC82;
+  color: white;
+}
+
+.navigation .test-link {
+  border-color: #ff6b6b;
+  color: #ff6b6b;
+  margin-left: 1rem;
+}
+
+.navigation .test-link:hover {
+  background: #ff6b6b;
   color: white;
 }
 

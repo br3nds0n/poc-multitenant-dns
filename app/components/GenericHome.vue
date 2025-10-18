@@ -38,8 +38,11 @@
       </div>
     </div>
 
+    <TenantSwitcher />
+
     <nav class="navigation">
       <NuxtLink to="/about">Sobre o Sistema</NuxtLink>
+      <NuxtLink to="/test-area" class="test-link-disabled" title="Disponível apenas para test.mangrove">🔒 Área de Testes</NuxtLink>
     </nav>
   </div>
 </template>
@@ -174,5 +177,18 @@ h1 {
 .navigation a:hover {
   background: #4a5568;
   color: white;
+}
+
+.navigation .test-link-disabled {
+  border-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  margin-left: 1rem;
+}
+
+.navigation .test-link-disabled:hover {
+  background: #f5f5f5;
+  color: #999;
+  transform: none;
 }
 </style>
