@@ -44,6 +44,15 @@
       <p>Esta é uma página customizada para o domínio Mangrove Labs.</p>
     </div>
 
+    <div class="card api-test">
+      <h2>🔌 Teste de API</h2>
+      <button @click="testApi" class="api-button">Chamar API Mangrove</button>
+      <div v-if="apiResponse" class="api-response">
+        <h3>Resposta da API:</h3>
+        <pre>{{ JSON.stringify(apiResponse, null, 2) }}</pre>
+      </div>
+    </div>
+
     <nav class="navigation">
       <NuxtLink to="/about">Saiba mais sobre nós</NuxtLink>
     </nav>
@@ -54,6 +63,11 @@
 import type { TenantInfo } from '~/composables/useTenant'
 
 export default {
+  data() {
+    return {
+      apiResponse: null as any
+    }
+  },
   computed: {
     tenant(): TenantInfo | null {
       const nuxtApp = useNuxtApp()
@@ -64,6 +78,18 @@ export default {
     },
     host(): string {
       return this.tenant?.host || 'unknown'
+    }
+  },
+  methods: {
+    async testApi() {
+      try {
+        const response = await $fetch('/api/mangrove')
+        this.apiResponse = response
+        console.log('API Response:', response)
+      } catch (error) {
+        console.error('Erro ao chamar API:', error)
+        this.apiResponse = { error: 'Erro ao chamar API', details: String(error) }
+      }
     }
   }
 }
@@ -188,5 +214,50 @@ export default {
 .navigation a:hover {
   background: #00DC82;
   color: white;
+}
+
+.api-test {
+  background: #fff3e0;
+  border-left: 4px solid #ff9800;
+}
+
+.api-button {
+  background: #ff9800;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 1rem;
+}
+
+.api-button:hover {
+  background: #f57c00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 152, 0, 0.3);
+}
+
+.api-response {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #263238;
+  border-radius: 8px;
+  color: #aed581;
+}
+
+.api-response h3 {
+  color: #fff;
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.api-response pre {
+  margin: 0;
+  overflow-x: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
 }
 </style>
