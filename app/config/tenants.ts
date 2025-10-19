@@ -6,34 +6,21 @@ export interface TenantConfig {
 }
 
 export const tenantConfigs: Record<string, TenantConfig> = {
-  'mangrove': {
+  mangrove: {
     domain: 'mangrovelabs.com.br',
     name: 'Mangrove Labs',
-    allowedRoutes: [
-      '/',
-      '/about',
-      '/admin',
-      '/admin/dashboard',
-      '/admin/users'
-    ]
+    allowedRoutes: ['/', '/about', '/admin', '/admin/dashboard', '/admin/users']
   },
   'test.mangrove': {
     domain: 'test.mangrovelabs.com.br',
     name: 'Mangrove Labs Test',
-    allowedRoutes: [
-      '/',
-      '/about',
-      '/test-area'
-    ],
+    allowedRoutes: ['/', '/about', '/test-area'],
     restrictedRoutes: ['/admin']
   },
-  'default': {
+  default: {
     domain: '*',
     name: 'Default Tenant',
-    allowedRoutes: [
-      '/',
-      '/about'
-    ],
+    allowedRoutes: ['/', '/about'],
     restrictedRoutes: ['/admin', '/test-area']
   }
 }
@@ -46,10 +33,10 @@ export function getTenantConfig(domain: string): TenantConfig {
   }
 
   if (normalizedDomain.includes('mangrovelabs.com.br') || normalizedDomain.includes('mangrove')) {
-    return tenantConfigs['mangrove']
+    return tenantConfigs.mangrove
   }
 
-  return tenantConfigs['default']
+  return tenantConfigs.default
 }
 
 export function isRouteAllowed(domain: string, routePath: string): boolean {

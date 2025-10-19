@@ -6,16 +6,15 @@
 
       <div class="error-message">
         <p>Você não tem permissão para acessar esta página com o tenant atual.</p>
-        <p class="tenant-info">Tenant: <strong>{{ domain }}</strong></p>
+        <p class="tenant-info">
+          Tenant:
+          <strong>{{ domain }}</strong>
+        </p>
       </div>
 
       <div class="actions">
-        <button @click="goHome" class="btn-primary">
-          Ir para Home
-        </button>
-        <button @click="goBack" class="btn-secondary">
-          Voltar
-        </button>
+        <button class="btn-primary" @click="goHome">Ir para Home</button>
+        <button class="btn-secondary" @click="goBack">Voltar</button>
       </div>
     </div>
   </div>
@@ -25,6 +24,11 @@
 import type { TenantInfo } from '~/composables/useTenant'
 
 export default {
+  head() {
+    return {
+      title: '403 - Acesso Negado'
+    }
+  },
   computed: {
     tenant(): TenantInfo | null {
       const nuxtApp = useNuxtApp()
@@ -41,11 +45,6 @@ export default {
     goBack() {
       window.history.back()
     }
-  },
-  head() {
-    return {
-      title: '403 - Acesso Negado'
-    }
   }
 }
 </script>
@@ -58,7 +57,10 @@ export default {
   justify-content: center;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 2rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 .error-content {

@@ -1,4 +1,4 @@
-export default defineEventHandler((event) => {
+export default defineEventHandler(event => {
   const host = getRequestHeader(event, 'host') || 'unknown'
 
   return {
@@ -6,7 +6,7 @@ export default defineEventHandler((event) => {
     message: 'Mangrove API está funcionando!',
     data: {
       tenant: 'Mangrove Labs',
-      host: host,
+      host: host || '',
       timestamp: new Date().toISOString(),
       endpoint: '/api/mangrove'
     }

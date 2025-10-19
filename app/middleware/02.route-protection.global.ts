@@ -1,6 +1,6 @@
 import { isRouteAllowed } from '~/config/tenants'
 
-export default defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware(to => {
   if (import.meta.server) {
     const nuxtApp = useNuxtApp()
     const tenant = nuxtApp.payload.tenant

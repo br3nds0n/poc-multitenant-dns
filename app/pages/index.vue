@@ -12,6 +12,11 @@
 import type { TenantInfo } from '~/composables/useTenant'
 
 export default {
+  head() {
+    return {
+      title: this.isMangrove ? `Mangrove Labs - ${this.domain}` : `Home - ${this.domain}`
+    }
+  },
   computed: {
     tenant(): TenantInfo | null {
       const nuxtApp = useNuxtApp()
@@ -22,13 +27,6 @@ export default {
     },
     isMangrove(): boolean {
       return this.domain.toLowerCase().includes('mangrove')
-    }
-  },
-  head() {
-    return {
-      title: this.isMangrove
-        ? `Mangrove Labs - ${this.domain}`
-        : `Home - ${this.domain}`
     }
   }
 }

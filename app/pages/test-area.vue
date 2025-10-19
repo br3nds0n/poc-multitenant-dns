@@ -9,7 +9,10 @@
       <span class="alert-icon">🔒</span>
       <div class="alert-content">
         <h3>Área Restrita</h3>
-        <p>Esta página está disponível apenas para o tenant <strong>test.mangrovelabs.com.br</strong></p>
+        <p>
+          Esta página está disponível apenas para o tenant
+          <strong>test.mangrovelabs.com.br</strong>
+        </p>
       </div>
     </div>
 
@@ -97,7 +100,10 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 .header {

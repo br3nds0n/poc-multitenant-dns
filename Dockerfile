@@ -21,6 +21,7 @@ RUN mkdir -p /var/log/nginx /var/lib/nginx/tmp
 ENV HOST=0.0.0.0
 ENV PORT=3003
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=2048"
 
 EXPOSE 3002
 

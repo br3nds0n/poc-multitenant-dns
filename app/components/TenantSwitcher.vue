@@ -2,15 +2,18 @@
   <div v-if="showSwitcher" class="tenant-switcher">
     <div class="switcher-header">
       <h3>🌐 Navegação entre Tenants</h3>
-      <p class="current-tenant">Atual: <strong>{{ currentTenant }}</strong></p>
+      <p class="current-tenant">
+        Atual:
+        <strong>{{ currentTenant }}</strong>
+      </p>
     </div>
 
     <div class="tenant-list">
       <button
         v-for="tenant in tenants"
         :key="tenant.key"
-        @click="switchTenant(tenant)"
         :class="['tenant-button', { active: isCurrentTenant(tenant) }]"
+        @click="switchTenant(tenant)"
       >
         <span class="tenant-icon">{{ tenant.icon }}</span>
         <div class="tenant-info">
@@ -56,10 +59,11 @@ export default {
       // Só mostra em desenvolvimento (localhost)
       if (import.meta.client) {
         const hostname = window.location.hostname
-        const isDev = hostname === 'localhost' ||
-                     hostname === '127.0.0.1' ||
-                     hostname.includes('sslip.io') ||
-                     hostname.includes('.local')
+        const isDev =
+          hostname === 'localhost' ||
+          hostname === '127.0.0.1' ||
+          hostname.includes('sslip.io') ||
+          hostname.includes('.local')
 
         return isDev
       }
@@ -76,16 +80,19 @@ export default {
     isCurrentTenant(tenant: any): boolean {
       if (import.meta.client) {
         const currentHost = window.location.hostname
-        return currentHost.includes(tenant.key) ||
-               (tenant.key === 'default' && currentHost === 'localhost')
+        return (
+          currentHost.includes(tenant.key) ||
+          (tenant.key === 'default' && currentHost === 'localhost')
+        )
       }
       return false
     },
     switchTenant(tenant: any) {
       if (import.meta.client) {
-        const isLocalhost = window.location.hostname === 'localhost' ||
-                           window.location.hostname.includes('127.0.0.1') ||
-                           window.location.hostname.includes('sslip.io')
+        const isLocalhost =
+          window.location.hostname === 'localhost' ||
+          window.location.hostname.includes('127.0.0.1') ||
+          window.location.hostname.includes('sslip.io')
 
         let newUrl
         if (isLocalhost) {
@@ -132,7 +139,7 @@ export default {
 }
 
 .current-tenant strong {
-  color: #00DC82;
+  color: #00dc82;
 }
 
 .tenant-list {
@@ -155,14 +162,14 @@ export default {
 }
 
 .tenant-button:hover {
-  border-color: #00DC82;
+  border-color: #00dc82;
   transform: translateX(5px);
   box-shadow: 0 2px 8px rgba(0, 220, 130, 0.2);
 }
 
 .tenant-button.active {
   background: #e8f5e9;
-  border-color: #00DC82;
+  border-color: #00dc82;
   border-width: 3px;
 }
 

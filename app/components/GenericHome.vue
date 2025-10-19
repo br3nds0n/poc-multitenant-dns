@@ -42,7 +42,13 @@
 
     <nav class="navigation">
       <NuxtLink to="/about">Sobre o Sistema</NuxtLink>
-      <NuxtLink to="/test-area" class="test-link-disabled" title="Disponível apenas para test.mangrove">🔒 Área de Testes</NuxtLink>
+      <NuxtLink
+        to="/test-area"
+        class="test-link-disabled"
+        title="Disponível apenas para test.mangrove"
+      >
+        🔒 Área de Testes
+      </NuxtLink>
     </nav>
   </div>
 </template>
@@ -71,7 +77,10 @@ export default {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 h1 {

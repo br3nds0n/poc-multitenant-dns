@@ -46,7 +46,7 @@
 
     <div class="card api-test">
       <h2>🔌 Teste de API</h2>
-      <button @click="testApi" class="api-button">Chamar API Mangrove</button>
+      <button class="api-button" @click="testApi">Chamar API Mangrove</button>
       <div v-if="apiResponse" class="api-response">
         <h3>Resposta da API:</h3>
         <pre>{{ JSON.stringify(apiResponse, null, 2) }}</pre>
@@ -57,7 +57,7 @@
 
     <nav class="navigation">
       <NuxtLink to="/about">Saiba mais sobre nós</NuxtLink>
-      <NuxtLink to="/test-area" v-if="isTestTenant" class="test-link">🧪 Área de Testes</NuxtLink>
+      <NuxtLink v-if="isTestTenant" to="/test-area" class="test-link">🧪 Área de Testes</NuxtLink>
     </nav>
   </div>
 </template>
@@ -106,13 +106,16 @@ export default {
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 .hero {
   text-align: center;
   padding: 3rem 0;
-  background: linear-gradient(135deg, #00DC82 0%, #00a05a 100%);
+  background: linear-gradient(135deg, #00dc82 0%, #00a05a 100%);
   border-radius: 12px;
   color: white;
   margin-bottom: 2rem;
@@ -144,7 +147,7 @@ export default {
 
 .tenant-info {
   background: #e8f5e9;
-  border-left: 4px solid #00DC82;
+  border-left: 4px solid #00dc82;
 }
 
 .info-grid {
@@ -165,7 +168,7 @@ export default {
 }
 
 .info-item .value {
-  color: #00DC82;
+  color: #00dc82;
   font-family: 'Courier New', monospace;
   word-break: break-all;
 }
@@ -179,11 +182,13 @@ export default {
 
 .feature-card {
   background: white;
-  border: 2px solid #00DC82;
+  border: 2px solid #00dc82;
   border-radius: 8px;
   padding: 1.5rem;
   text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .feature-card:hover {
@@ -192,7 +197,7 @@ export default {
 }
 
 .feature-card h3 {
-  color: #00DC82;
+  color: #00dc82;
   margin-top: 0;
 }
 
@@ -206,19 +211,19 @@ export default {
 }
 
 .navigation a {
-  color: #00DC82;
+  color: #00dc82;
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
   padding: 0.75rem 1.5rem;
-  border: 2px solid #00DC82;
+  border: 2px solid #00dc82;
   border-radius: 8px;
   display: inline-block;
   transition: all 0.3s;
 }
 
 .navigation a:hover {
-  background: #00DC82;
+  background: #00dc82;
   color: white;
 }
 
