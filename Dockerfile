@@ -1,36 +1,43 @@
+# ================================
+# 🏗️ Fase 1 — Build da aplicação
+# ================================
 FROM node:22-alpine AS builder
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
 
-FROM node:22-alpine AS production
-WORKDIR /app
+# Instala dependências necessárias (git + bash)
+RUN apk add --no-cache git bash
 
-RUN apk add --no-cache nginx
-
-COPY --from=builder /app/.output ./.output
-COPY --from=builder /app/package*.json ./
-RUN npm ci --omit=dev
-
-COPY nginx.conf /etc/nginx/nginx.conf
-
-RUN mkdir -p /var/log/nginx /var/lib/nginx/tmp
-
-ENV HOST=0.0.0.0
-ENV PORT=3003
+# Define ambiente e memória do Node
 ENV NODE_ENV=production
 ENV NODE_OPTIONS="--max-old-space-size=2048"
 
-EXPOSE 3002
+# Copia arquivos de dependência e instala
+COPY package*.json ./
+RUN npm ci
 
-COPY <<EOF /start.sh
-#!/bin/sh
-node /app/.output/server/index.mjs &
-nginx -g "daemon off;"
-EOF
+# Copia o restante do código e faz o build
+COPY . .
+RUN npm run build
 
-RUN chmod +x /start.sh
 
-CMD ["/start.sh"]
+# ===================================
+# 🚀 Fase 2 — Execução com Nginx
+# ===================================
+FROM node:22-alpine AS runner
+WORKDIR /app
+
+# Instala Nginx
+RUN apk add --no-cache nginx
+
+# Copia o build do Nuxt
+COPY --from=builder /app/.output .output
+COPY --from=builder /app/package*.json ./
+
+# Copia configuração customizada do Nginx (se tiver)
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expõe a porta padrão
+EXPOSE 3000
+
+# Comando de inicialização
+CMD ["node", ".output/server/index.mjs"]
